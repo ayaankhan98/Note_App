@@ -1,2 +1,2 @@
-# Todo-Flutter
-Todo Application in Flutter
+# Note-App
+Note Application in Flutter
