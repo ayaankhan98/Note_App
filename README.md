@@ -1,5 +1,9 @@
 # Note-App
-<div style="text-align:center"><img src="./preview/p.png" height=200></div>
+
+<p align="center">
+  <img src="./preview/p.png" height=200>
+</p>
+
 A Minimal Note Application in Flutter
 
 ## Packages
