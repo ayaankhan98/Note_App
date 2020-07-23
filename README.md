@@ -37,6 +37,9 @@ flutter emulators --launch YOUR_EMULATOR_ID
 Finally the app is running on your machine
 
 ## Preview
-<img src="./preview/1.png" width=300>
-&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-<img src="./preview/2.png" width=300>
+<table>
+<tr>
+<td><img src="./preview/1.png" width=300></td>
+<td><img src="./preview/2.png" width=300></td>
+</tr>
+</table>
