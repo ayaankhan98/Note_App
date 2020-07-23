@@ -1,4 +1,5 @@
 # Note-App
+<center><img src="./preview/p.png" height=200><br/></center>
 A Minimal Note Application in Flutter
 
 ## Packages
