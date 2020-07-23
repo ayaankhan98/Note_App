@@ -1,8 +1,8 @@
-import 'package:Note_App/screens/note_details.dart';
-import 'package:flutter/material.dart';
 import 'package:Note_App/models/note.dart';
-import 'package:Note_App/utils/databaseHelper.dart';
-import 'dart:async';
+import 'package:Note_App/screens/edit_note.dart';
+import 'package:Note_App/screens/view_note.dart';
+import 'package:Note_App/utils/database_helper.dart';
+import 'package:flutter/material.dart';
 import 'package:sqflite/sqflite.dart';
 
 class NoteList extends StatefulWidget {
@@ -11,132 +11,108 @@ class NoteList extends StatefulWidget {
 }
 
 class _NoteListState extends State<NoteList> {
-  String appBarTitle = "Notes";
+  Note note = Note('', '', '');
   List<Note> noteList;
-  DatabaseHelper databaseHelper = DatabaseHelper();
-  int count = 0;
+  int _count = 0;
+  DatabaseHelper _helper = DatabaseHelper();
 
   @override
   Widget build(BuildContext context) {
     if (noteList == null) {
       noteList = List<Note>();
-      updateListView();
+      updateNoteListView();
     }
-
     return Scaffold(
       appBar: AppBar(
-        title: Text("$appBarTitle"),
+        title: Text('Notes'),
       ),
-      body: getNoteListView(),
+      backgroundColor: Colors.white,
+      body: showNoteList(),
       floatingActionButton: FloatingActionButton(
-        onPressed: () => {navigateToDetail(Note('', '', 2), 'Add Note')},
-        tooltip: "Add New Note",
-        child: Icon(Icons.add),
+        child: Icon(Icons.create),
+        tooltip: "Create Note",
+        onPressed: () {
+          goToNoteDetails();
+        },
       ),
     );
   }
 
-  ListView getNoteListView() {
-    TextStyle titleStyle = Theme.of(context).textTheme.subtitle1;
+  void goToNoteDetails() async {
+    bool response = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CreateNote(Note('', '', ''))));
+    if (response == true) {
+      updateNoteListView();
+    }
+  }
 
-    return ListView.builder(
-      itemCount: count,
-      itemBuilder: (BuildContext context, int position) {
+  Widget showNoteList() {
+    var listView = ListView.builder(
+      itemCount: _count,
+      itemBuilder: (context, index) {
         return Card(
-          color: Colors.white,
-          elevation: 2.0,
           child: ListTile(
-            leading: CircleAvatar(
-              backgroundColor:
-                  getPriorityColor(this.noteList[position].priority),
-              child: getPriorityIcon(this.noteList[position].priority),
+            leading: Icon(
+              Icons.book,
+              color: Colors.black,
             ),
             title: Text(
-              this.noteList[position].title,
-              style: titleStyle,
+              this.noteList[index].title,
+              style: TextStyle(fontFamily: 'amaranth', fontSize: 20.0),
             ),
-            subtitle: Text(this.noteList[position].date),
+            subtitle: Text(
+              this.noteList[index].date,
+              style: TextStyle(
+                  fontFamily: 'caveat',
+                  fontWeight: FontWeight.bold,
+                  fontSize: 20.0),
+            ),
             trailing: GestureDetector(
               child: Icon(
                 Icons.delete,
-                color: Colors.grey,
+                color: Colors.blueGrey,
               ),
               onTap: () {
-                _delete(context, noteList[position]);
+                _delete(context, noteList[index]);
               },
             ),
             onTap: () {
-              debugPrint("ListTile Tapped");
-              navigateToDetail(this.noteList[position], 'Edit Note');
+              _viewNote(noteList[index]);
             },
           ),
+          color: Colors.white,
+          elevation: 12.0,
         );
       },
     );
+    return listView;
   }
 
-  Color getPriorityColor(int priority) {
-    switch (priority) {
-      case 1:
-        return Colors.red;
-        break;
-      case 2:
-        return Colors.yellow;
-        break;
-
-      default:
-        return Colors.yellow;
-    }
-  }
-
-  Icon getPriorityIcon(int priority) {
-    switch (priority) {
-      case 1:
-        return Icon(Icons.play_arrow);
-        break;
-      case 2:
-        return Icon(Icons.keyboard_arrow_right);
-        break;
-
-      default:
-        return Icon(Icons.keyboard_arrow_right);
-    }
-  }
-
-  void _delete(BuildContext context, Note note) async {
-    int result = await databaseHelper.deleteNote(note.id);
-    if (result != 0) {
-      _showSnackBar(context, 'Note Deleted Successfully');
-      updateListView();
-    }
-  }
-
-  void _showSnackBar(BuildContext context, String message) {
-    final snackBar = SnackBar(content: Text(message));
-    Scaffold.of(context).showSnackBar(snackBar);
-  }
-
-  void navigateToDetail(Note note, String title) async {
-    bool result =
-        await Navigator.push(context, MaterialPageRoute(builder: (context) {
-      return NoteDetails(note, title);
-    }));
-
-    if (result == true) {
-      updateListView();
-    }
-  }
-
-  void updateListView() {
-    final Future<Database> dbFuture = databaseHelper.initializeDatabase();
+  void updateNoteListView() {
+    final Future<Database> dbFuture = _helper.initializeDatabase();
     dbFuture.then((database) {
-      Future<List<Note>> noteListFuture = databaseHelper.getNoteList();
+      Future<List<Note>> noteListFuture = _helper.getNoteList();
       noteListFuture.then((noteList) {
         setState(() {
           this.noteList = noteList;
-          this.count = noteList.length;
+          this._count = noteList.length;
         });
       });
     });
+  }
+
+  void _delete(BuildContext context, Note note) async {
+    int response = await _helper.delete(note.id);
+    if (response != 0) {
+      updateNoteListView();
+    }
+  }
+
+  void _viewNote(Note note) async {
+    bool response = await Navigator.push(
+        context, MaterialPageRoute(builder: (context) => ViewNote(note)));
+    if (response) {
+      updateNoteListView();
+    }
   }
 }

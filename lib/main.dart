@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
-import './screens/note_list.dart';
-import './screens/note_details.dart';
+import 'package:Note_App/screens/note_list.dart';
 
 void main() {
   runApp(Home());
@@ -11,9 +10,9 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      title: "Note Application",
       theme: ThemeData(
-        primarySwatch: Colors.green,
+//        primaryColor: Colors.cyan,
+        primarySwatch: Colors.teal,
       ),
       home: NoteList(),
     );

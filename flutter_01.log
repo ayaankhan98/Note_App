@@ -1,0 +1,116 @@
+Flutter crash report; please file at https://github.com/flutter/flutter/issues.
+
+## command
+
+flutter --quiet assemble --depfile /home/ayaan/flutter-exercise/Note_App/build/app/intermediates/flutter/debug/flutter_build.d --output /home/ayaan/flutter-exercise/Note_App/build/app/intermediates/flutter/debug -dTargetFile=/home/ayaan/flutter-exercise/Note_App/lib/main.dart -dTargetPlatform=android -dBuildMode=debug --DartDefines=flutter.inspector.structuredErrors=true debug_android_application
+
+## exception
+
+_CastError: type 'double' is not a subtype of type 'int' in type cast
+
+```
+#0      FlutterManifest._extractFonts (package:flutter_tools/src/flutter_manifest.dart:254:38)
+#1      FlutterManifest.fonts (package:flutter_tools/src/flutter_manifest.dart:222:16)
+#2      _parseAssets (package:flutter_tools/src/asset.dart:632:43)
+#3      _ManifestAssetBundle.build (package:flutter_tools/src/asset.dart:158:53)
+#4      copyAssets (package:flutter_tools/src/build_system/targets/assets.dart:23:21)
+#5      AndroidAssetBundle.build (package:flutter_tools/src/build_system/targets/android.dart:65:42)
+#6      _BuildInstance._invokeInternal (package:flutter_tools/src/build_system/build_system.dart:614:25)
+<asynchronous suspension>
+#7      _BuildInstance.invokeTarget.<anonymous closure> (package:flutter_tools/src/build_system/build_system.dart:569:35)
+#8      new Future.sync (dart:async/future.dart:224:31)
+#9      AsyncMemoizer.runOnce (package:async/src/async_memoizer.dart:43:45)
+#10     _BuildInstance.invokeTarget (package:flutter_tools/src/build_system/build_system.dart:569:21)
+<asynchronous suspension>
+#11     BuildSystem.build (package:flutter_tools/src/build_system/build_system.dart:498:36)
+#12     AssembleCommand.runCommand (package:flutter_tools/src/commands/assemble.dart:189:58)
+#13     FlutterCommand.verifyThenRunCommand (package:flutter_tools/src/runner/flutter_command.dart:723:18)
+<asynchronous suspension>
+#14     FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart:620:33)
+<asynchronous suspension>
+#15     FlutterCommand.run.<anonymous closure> (package:flutter_tools/src/runner/flutter_command.dart)
+#16     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:29)
+#17     _rootRun (dart:async/zone.dart:1184:13)
+#18     _CustomZone.run (dart:async/zone.dart:1077:19)
+#19     _runZoned (dart:async/zone.dart:1619:10)
+#20     runZoned (dart:async/zone.dart:1539:10)
+#21     AppContext.run (package:flutter_tools/src/base/context.dart:149:18)
+#22     FlutterCommand.run (package:flutter_tools/src/runner/flutter_command.dart:610:20)
+#23     CommandRunner.runCommand (package:args/command_runner.dart:197:27)
+#24     FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart:339:21)
+<asynchronous suspension>
+#25     FlutterCommandRunner.runCommand.<anonymous closure> (package:flutter_tools/src/runner/flutter_command_runner.dart)
+#26     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:29)
+#27     _rootRun (dart:async/zone.dart:1184:13)
+#28     _CustomZone.run (dart:async/zone.dart:1077:19)
+#29     _runZoned (dart:async/zone.dart:1619:10)
+#30     runZoned (dart:async/zone.dart:1539:10)
+#31     AppContext.run (package:flutter_tools/src/base/context.dart:149:18)
+#32     FlutterCommandRunner.runCommand (package:flutter_tools/src/runner/flutter_command_runner.dart:288:19)
+#33     CommandRunner.run.<anonymous closure> (package:args/command_runner.dart:112:25)
+#34     new Future.sync (dart:async/future.dart:224:31)
+#35     CommandRunner.run (package:args/command_runner.dart:112:14)
+#36     FlutterCommandRunner.run (package:flutter_tools/src/runner/flutter_command_runner.dart:231:18)
+#37     run.<anonymous closure>.<anonymous closure> (package:flutter_tools/runner.dart:63:22)
+#38     _rootRun (dart:async/zone.dart:1184:13)
+#39     _CustomZone.run (dart:async/zone.dart:1077:19)
+#40     _runZoned (dart:async/zone.dart:1619:10)
+#41     runZonedGuarded (dart:async/zone.dart:1608:12)
+#42     runZoned (dart:async/zone.dart:1536:12)
+#43     run.<anonymous closure> (package:flutter_tools/runner.dart:61:18)
+<asynchronous suspension>
+#44     run.<anonymous closure> (package:flutter_tools/runner.dart)
+#45     runInContext.runnerWrapper (package:flutter_tools/src/context_runner.dart:64:18)
+<asynchronous suspension>
+#46     runInContext.runnerWrapper (package:flutter_tools/src/context_runner.dart)
+#47     AppContext.run.<anonymous closure> (package:flutter_tools/src/base/context.dart:150:29)
+#48     _rootRun (dart:async/zone.dart:1184:13)
+#49     _CustomZone.run (dart:async/zone.dart:1077:19)
+#50     _runZoned (dart:async/zone.dart:1619:10)
+#51     runZoned (dart:async/zone.dart:1539:10)
+#52     AppContext.run (package:flutter_tools/src/base/context.dart:149:18)
+#53     runInContext (package:flutter_tools/src/context_runner.dart:67:24)
+#54     run (package:flutter_tools/runner.dart:48:10)
+#55     main (package:flutter_tools/executable.dart:69:9)
+#56     main (file:///b/s/w/ir/k/archive/flutter/packages/flutter_tools/bin/flutter_tools.dart:8:3)
+#57     _startIsolate.<anonymous closure> (dart:isolate-patch/isolate_patch.dart:299:32)
+#58     _RawReceivePortImpl._handleMessage (dart:isolate-patch/isolate_patch.dart:168:12)
+```
+
+## flutter doctor
+
+```
+[✓] Flutter (Channel stable, v1.17.5, on Linux, locale en_IN)
+    • Flutter version 1.17.5 at /home/ayaan/flutter-dev/flutter
+    • Framework revision 8af6b2f038 (3 weeks ago), 2020-06-30 12:53:55 -0700
+    • Engine revision ee76268252
+    • Dart version 2.8.4
+
+[!] Android toolchain - develop for Android devices (Android SDK version 29.0.3)
+    • Android SDK at /home/ayaan/Android/Sdk
+    • Platform android-29, build-tools 29.0.3
+    • Java binary at: /snap/android-studio/90/android-studio/jre/bin/java
+    • Java version OpenJDK Runtime Environment (build 1.8.0_242-release-1644-b3-6222593)
+    ! Some Android licenses not accepted.  To resolve this, run: flutter doctor --android-licenses
+
+[!] Android Studio (version 3.6)
+    • Android Studio at /snap/android-studio/88/android-studio
+    ✗ Flutter plugin not installed; this adds Flutter specific functionality.
+    ✗ Dart plugin not installed; this adds Dart specific functionality.
+    • Java version OpenJDK Runtime Environment (build 1.8.0_212-release-1586-b4-5784211)
+
+[✓] Android Studio (version 4.0)
+    • Android Studio at /snap/android-studio/90/android-studio
+    • Flutter plugin version 47.1.2
+    • Dart plugin version 193.7361
+    • Java version OpenJDK Runtime Environment (build 1.8.0_242-release-1644-b3-6222593)
+
+[✓] VS Code (version 1.46.0)
+    • VS Code at /usr/share/code
+    • Flutter extension version 3.12.2
+
+[✓] Connected device (1 available)
+    • Android SDK built for x86 • emulator-5554 • android-x86 • Android 10 (API 29) (emulator)
+
+! Doctor found issues in 2 categories.
+```
