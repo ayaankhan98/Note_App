@@ -10,8 +10,8 @@ class Home extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+      title: "Note App",
       theme: ThemeData(
-//        primaryColor: Colors.cyan,
         primarySwatch: Colors.teal,
       ),
       home: NoteList(),
