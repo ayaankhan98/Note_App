@@ -17,31 +17,31 @@ class Note {
   String get date => _date;
 
   set title(String title) {
-    this._title = title;
+    _title = title;
   }
 
   set content(String content) {
-    this._content = content;
+    _content = content;
   }
 
   set date(String date) {
-    this._date = date;
+    _date = date;
   }
 
   Map<String, dynamic> objToMap() {
-    Map<String, dynamic> mapObj = Map<String, dynamic>();
+    final Map<String, dynamic> mapObj = <String, dynamic>{};
 
-    mapObj["id"] = this.id;
-    mapObj["title"] = this.title;
-    mapObj["content"] = this.content;
-    mapObj["date"] = this.date;
+    mapObj["id"] = id;
+    mapObj["title"] = title;
+    mapObj["content"] = content;
+    mapObj["date"] = date;
     return mapObj;
   }
 
   Note.mapToObj(Map<String, dynamic> map) {
-    this._id = map['id'];
-    this._title = map['title'];
-    this._content = map['content'];
-    this._date = map['date'];
+    _id = map['id'] as int;
+    _title = map['title'] as String;
+    _content = map['content'] as String;
+    _date = map['date'] as String;
   }
 }
