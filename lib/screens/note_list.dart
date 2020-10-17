@@ -14,32 +14,32 @@ class _NoteListState extends State<NoteList> {
   Note note = Note('', '', '');
   List<Note> noteList;
   int _count = 0;
-  final DatabaseHelper _helper = DatabaseHelper();
+  DatabaseHelper _helper = DatabaseHelper();
 
   @override
   Widget build(BuildContext context) {
     if (noteList == null) {
-      noteList = <Note>[];
+      noteList = List<Note>();
       updateNoteListView();
     }
     return Scaffold(
       appBar: AppBar(
-        title: const Text('Notes'),
+        title: Text('Notes'),
       ),
       backgroundColor: Colors.white,
       body: showNoteList(),
       floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.create),
         tooltip: "Create Note",
         onPressed: () {
           goToNoteDetails();
         },
-        child: const Icon(Icons.create),
       ),
     );
   }
 
-  Future goToNoteDetails() async {
-    final bool response = await Navigator.push(context,
+  void goToNoteDetails() async {
+    bool response = await Navigator.push(context,
         MaterialPageRoute(builder: (context) => CreateNote(Note('', '', ''))));
     if (response == true) {
       updateNoteListView();
@@ -47,41 +47,41 @@ class _NoteListState extends State<NoteList> {
   }
 
   Widget showNoteList() {
-    final listView = ListView.builder(
+    var listView = ListView.builder(
       itemCount: _count,
       itemBuilder: (context, index) {
         return Card(
-          color: Colors.white,
-          elevation: 12.0,
           child: ListTile(
-            leading: const Icon(
+            leading: Icon(
               Icons.book,
               color: Colors.black,
             ),
             title: Text(
-              noteList[index].title,
-              style: const TextStyle(fontFamily: 'amaranth', fontSize: 20.0),
+              this.noteList[index].title,
+              style: TextStyle(fontFamily: 'amaranth', fontSize: 20.0),
             ),
             subtitle: Text(
-              noteList[index].date,
-              style: const TextStyle(
+              this.noteList[index].date,
+              style: TextStyle(
                   fontFamily: 'caveat',
                   fontWeight: FontWeight.bold,
                   fontSize: 20.0),
             ),
             trailing: GestureDetector(
-              onTap: () {
-                _delete(context, noteList[index]);
-              },
-              child: const Icon(
+              child: Icon(
                 Icons.delete,
                 color: Colors.blueGrey,
               ),
+              onTap: () {
+                _delete(context, noteList[index]);
+              },
             ),
             onTap: () {
               _viewNote(noteList[index]);
             },
           ),
+          color: Colors.white,
+          elevation: 12.0,
         );
       },
     );
@@ -91,25 +91,25 @@ class _NoteListState extends State<NoteList> {
   void updateNoteListView() {
     final Future<Database> dbFuture = _helper.initializeDatabase();
     dbFuture.then((database) {
-      final Future<List<Note>> noteListFuture = _helper.getNoteList();
+      Future<List<Note>> noteListFuture = _helper.getNoteList();
       noteListFuture.then((noteList) {
         setState(() {
           this.noteList = noteList;
-          _count = noteList.length;
+          this._count = noteList.length;
         });
       });
     });
   }
 
-  Future _delete(BuildContext context, Note note) async {
-    final int response = await _helper.delete(note.id);
+  void _delete(BuildContext context, Note note) async {
+    int response = await _helper.delete(note.id);
     if (response != 0) {
       updateNoteListView();
     }
   }
 
-  Future _viewNote(Note note) async {
-    final bool response = await Navigator.push(
+  void _viewNote(Note note) async {
+    bool response = await Navigator.push(
         context, MaterialPageRoute(builder: (context) => ViewNote(note)));
     if (response) {
       updateNoteListView();
