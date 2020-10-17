@@ -6,36 +6,38 @@ import 'package:flutter/material.dart';
 class ViewNote extends StatefulWidget {
   final Note note;
 
-  const ViewNote(this.note);
+  ViewNote(this.note);
 
   @override
-  _ViewNoteState createState() => _ViewNoteState();
+  _ViewNoteState createState() => _ViewNoteState(this.note);
 }
 
 class _ViewNoteState extends State<ViewNote> {
-  final DatabaseHelper _helper = DatabaseHelper();
+  DatabaseHelper _helper = DatabaseHelper();
   Note note;
+
+  _ViewNoteState(this.note);
 
   @override
   Widget build(BuildContext context) {
-    final AppBar appBar = AppBar(
+    AppBar appBar = AppBar(
       leading: IconButton(
-          icon: const Icon(Icons.arrow_back),
+          icon: Icon(Icons.arrow_back),
           onPressed: () {
             goToLastScreen();
           }),
-      title: const Text('Notes'),
+      title: Text('Notes'),
       actions: <Widget>[
         FlatButton(
+          child: Icon(
+            Icons.edit,
+            color: Colors.black,
+          ),
           onPressed: () {
             setState(() {
               _editNote(context);
             });
           },
-          child: const Icon(
-            Icons.edit,
-            color: Colors.black,
-          ),
         ),
       ],
     );
@@ -50,30 +52,31 @@ class _ViewNoteState extends State<ViewNote> {
         body: ListView(
           children: <Widget>[
             Card(
-              color: Colors.white,
-              elevation: 3.0,
-              child: SizedBox(
+              child: Container(
                 height: 75.0,
                 child: Padding(
                   padding: const EdgeInsets.only(top: 20.0, left: 8.0),
                   child: Text(
-                    widget.note.title,
-                    style:
-                        const TextStyle(fontFamily: 'Amaranth', fontSize: 20.0),
+                    this.note.title,
+                    style: TextStyle(fontFamily: 'Amaranth', fontSize: 20.0),
                   ),
                 ),
               ),
+              color: Colors.white,
+              elevation: 3.0,
             ),
-            const SizedBox(
+            SizedBox(
               height: 20.0,
             ),
-            Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: Text(
-                widget.note.content,
-                style: const TextStyle(
-                  fontSize: 20.0,
-                  fontFamily: 'redHat',
+            Container(
+              child: Padding(
+                padding: const EdgeInsets.all(8.0),
+                child: Text(
+                  this.note.content,
+                  style: TextStyle(
+                    fontSize: 20.0,
+                    fontFamily: 'redHat',
+                  ),
                 ),
               ),
             ),
@@ -83,8 +86,8 @@ class _ViewNoteState extends State<ViewNote> {
     );
   }
 
-  Future updateNote() async {
-    final Note note = await _helper.getNoteById(widget.note.id);
+  void updateNote() async {
+    Note note = await _helper.getNoteById(this.note.id);
     setState(() {
       this.note = note;
     });
@@ -94,9 +97,9 @@ class _ViewNoteState extends State<ViewNote> {
     Navigator.pop(context, true);
   }
 
-  Future _editNote(BuildContext context) async {
-    final bool response = await Navigator.push(context,
-        MaterialPageRoute(builder: (context) => CreateNote(widget.note)));
+  void _editNote(context) async {
+    bool response = await Navigator.push(context,
+        MaterialPageRoute(builder: (context) => CreateNote(this.note)));
     if (response) {
       print(response.toString());
       updateNote();

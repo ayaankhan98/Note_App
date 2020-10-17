@@ -6,23 +6,25 @@ import 'package:intl/intl.dart';
 class CreateNote extends StatefulWidget {
   final Note note;
 
-  const CreateNote(this.note);
+  CreateNote(this.note);
 
   @override
-  _CreateNoteState createState() => _CreateNoteState();
+  _CreateNoteState createState() => _CreateNoteState(note);
 }
 
 class _CreateNoteState extends State<CreateNote> {
-  final DatabaseHelper _helper = DatabaseHelper();
+  DatabaseHelper _helper = DatabaseHelper();
   Note note;
 
-  final TextEditingController _titleController = TextEditingController();
-  final TextEditingController _noteController = TextEditingController();
+  _CreateNoteState(this.note);
+
+  TextEditingController _titleController = new TextEditingController();
+  TextEditingController _noteController = new TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    _titleController.text = widget.note.title;
-    _noteController.text = widget.note.content;
+    _titleController.text = this.note.title;
+    _noteController.text = this.note.content;
 
     return WillPopScope(
       onWillPop: () {
@@ -31,22 +33,22 @@ class _CreateNoteState extends State<CreateNote> {
       },
       child: Scaffold(
         appBar: AppBar(
-          title: const Text('Note'),
+          title: Text('Note'),
           actions: <Widget>[
             FlatButton(
+              child: Icon(
+                Icons.done,
+                color: Colors.black,
+              ),
               onPressed: () {
                 setState(() {
-                  if (widget.note.id == null) {
+                  if (note.id == null) {
                     _saveToDatabase();
                   } else {
                     _updateNoteToDatabase();
                   }
                 });
               },
-              child: const Icon(
-                Icons.done,
-                color: Colors.black,
-              ),
             ),
           ],
         ),
@@ -58,7 +60,7 @@ class _CreateNoteState extends State<CreateNote> {
               TextField(
                 controller: _titleController,
                 maxLength: 256,
-                decoration: const InputDecoration(
+                decoration: InputDecoration(
                   labelText: 'Title',
                   hintText: 'Put Note Title',
                 ),
@@ -66,7 +68,7 @@ class _CreateNoteState extends State<CreateNote> {
                   updateTitle(value);
                 },
               ),
-              const SizedBox(
+              SizedBox(
                 height: 10.0,
               ),
               Card(
@@ -75,9 +77,10 @@ class _CreateNoteState extends State<CreateNote> {
                   padding:
                       const EdgeInsets.only(top: 8.0, left: 8.0, right: 8.0),
                   child: TextField(
+
                     controller: _noteController,
                     maxLines: null,
-                    decoration: const InputDecoration(
+                    decoration: InputDecoration(
                       hintText: "Write a Note...",
                     ),
                     onChanged: (value) {
@@ -86,7 +89,7 @@ class _CreateNoteState extends State<CreateNote> {
                   ),
                 ),
               ),
-              const SizedBox(
+              SizedBox(
                 height: 10.0,
               ),
             ],
@@ -97,7 +100,7 @@ class _CreateNoteState extends State<CreateNote> {
   }
 
   void _showAlertDialog(String title, String message) {
-    final AlertDialog alertDialog = AlertDialog(
+    AlertDialog alertDialog = AlertDialog(
       title: Text(title),
       content: Text(message),
     );
@@ -109,13 +112,13 @@ class _CreateNoteState extends State<CreateNote> {
     Navigator.pop(context, true);
   }
 
-  Future _saveToDatabase() async {
+  _saveToDatabase() async {
     goToLastScreen();
-    widget.note.date = DateFormat.yMMMd().format(DateTime.now());
+    note.date = DateFormat.yMMMd().format(DateTime.now());
     int response;
-    if (widget.note.id != null) {
+    if (note.id != null) {
     } else {
-      response = await _helper.insert(widget.note);
+      response = await _helper.insert(note);
     }
     if (response != 0) {
 //      _showAlertDialog('Status', 'Note Saved');
@@ -124,20 +127,16 @@ class _CreateNoteState extends State<CreateNote> {
     }
   }
 
-  void _updateNoteToDatabase() {
+  _updateNoteToDatabase() {
     goToLastScreen();
-    _helper.update(widget.note);
+    _helper.update(note);
   }
 
-  void updateTitle(String value) {
-    setState(() {
-      widget.note.title = value;
-    });
+  updateTitle(String value) {
+    note.title = value;
   }
 
-  void updateContent(String value) {
-    setState(() {
-      widget.note.content = value;
-    });
+  updateContent(String value) {
+    note.content = value;
   }
 }
